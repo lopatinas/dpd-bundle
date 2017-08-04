@@ -7,8 +7,8 @@ use Lopatinas\DpdBundle\Interfaces\DpdSoapInterface;
 
 class DpdService
 {
-    const API_URL_PROD = 'http://ws.dpd.ru/services/';
-    const API_URL_DEV = 'http://wstest.dpd.ru/services/';
+    const API_URL_PROD = 'https://ws.dpd.ru/services/';
+    const API_URL_DEV = 'https://wstest.dpd.ru/services/';
 
     /** @var string */
     private $url;
@@ -28,30 +28,53 @@ class DpdService
      * @param $clientId
      * @param $clientKey
      */
-    public function setAuthData($isDev, $clientId, $clientKey)
+    public function __construct($isDev, $clientId, $clientKey)
     {
         $this->url = !$isDev ? self::API_URL_PROD : self::API_URL_DEV;
         $this->clientId = $clientId;
         $this->clientKey = $clientKey;
     }
 
-    private function doRequest($method, $data)
+    /**
+     * @param $method
+     * @param $data
+     * @param bool $isRequest
+     * @return mixed
+     */
+    private function doRequest($method, $data, $isRequest = true)
     {
         if (!isset(self::$methodMap[$method])) {
             throw new DpdException(sprintf('Method "%s" not found'), $method);
         }
 
         /** @var DpdSoapInterface $client */
-        $client = new \SoapClient($this->url . self::$methodMap[$method] . '?wsdl');
+        $client = new \SoapClient(sprintf('%s%s?wsdl', $this->url, self::$methodMap[$method]));
+
         $request = [
             'auth' => [
                 'clientNumber' => $this->clientId,
                 'clientKey' => $this->clientKey,
             ],
         ];
-        return $client->$method(array_merge($data, $request));
+
+        $data = array_merge($request, $data);
+        if ($isRequest) {
+            $data['request'] = $data;
+        }
+
+        try {
+            $result = $client->$method($data);
+        } catch (\Exception $e) {
+            throw new DpdException($e->getMessage(), $e->getCode(), $e->getPrevious());
+        }
+
+        return $result;
     }
 
+    /**
+     * @param array $data
+     * @return mixed
+     */
     public function calculate(array $data)
     {
         return $this->doRequest('getServiceCostByParcels2', $data);
