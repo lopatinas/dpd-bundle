@@ -1,0 +1,20 @@
+{
+  "name": "lopatinas/dpd-bundle",
+  "description": "DPD bundle",
+  "keywords": ["dpd", "symfony"],
+  "type": "symfony-bundle",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Alexey S. Lopatin",
+      "email": "a.lopatin@internetsystems.pro"
+    }
+  ],
+  "require": {
+    "php": ">=5.5.9",
+    "ext-curl": "*"
+  },
+  "autoload": {
+    "psr-4": { "Lopatinas\\DpdBundle\\": "" }
+  }
+}

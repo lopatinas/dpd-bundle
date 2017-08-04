@@ -1,0 +1,4 @@
+services:
+    dpd:
+        class: Lopatinas\DpdBundle\Service\DpdService
+        arguments: ["%dpd.is_dev%", "%dpd.account%", "%dpd.password%"]
