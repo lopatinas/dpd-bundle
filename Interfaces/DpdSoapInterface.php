@@ -134,4 +134,15 @@ interface DpdSoapInterface
      * @return mixed
      */
     public function getServiceCostByParcels2($requestData);
+
+    /**
+     * Endpoint: order2?wsdl
+     *
+     * Description:
+     *  Создание заказа
+     *
+     * @param $requestData
+     * @return mixed
+     */
+    public function createOrder($requestData);
 }

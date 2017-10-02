@@ -20,7 +20,8 @@ class DpdService
     private $clientKey;
 
     private static $methodMap = [
-        'getServiceCostByParcels2' => 'calculator2'
+        'getServiceCostByParcels2' => 'calculator2',
+        'createOrder' => 'order2',
     ];
 
     /**
@@ -78,5 +79,14 @@ class DpdService
     public function calculate(array $data)
     {
         return $this->doRequest('getServiceCostByParcels2', $data);
+    }
+
+    /**
+     * @param array $data
+     * @return mixed
+     */
+    public function createOrder(array $data)
+    {
+        return $this->doRequest('createOrder', $data);
     }
 }
