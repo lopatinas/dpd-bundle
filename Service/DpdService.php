@@ -39,10 +39,10 @@ class DpdService
     /**
      * @param $method
      * @param $data
-     * @param bool $isRequest
+     * @param string $tag
      * @return mixed
      */
-    private function doRequest($method, $data, $isRequest = true)
+    private function doRequest($method, $data, $tag = '')
     {
         if (!isset(self::$methodMap[$method])) {
             throw new DpdException(sprintf('Method "%s" not found'), $method);
@@ -59,8 +59,8 @@ class DpdService
         ];
 
         $data = array_merge($request, $data);
-        if ($isRequest) {
-            $data['request'] = $data;
+        if (!empty($tag)) {
+            $data[$tag] = $data;
         }
 
         try {
@@ -78,7 +78,7 @@ class DpdService
      */
     public function calculate(array $data)
     {
-        return $this->doRequest('getServiceCostByParcels2', $data);
+        return $this->doRequest('getServiceCostByParcels2', $data, 'request');
     }
 
     /**
@@ -87,6 +87,6 @@ class DpdService
      */
     public function createOrder(array $data)
     {
-        return $this->doRequest('createOrder', $data);
+        return $this->doRequest('createOrder', $data, 'orders');
     }
 }
