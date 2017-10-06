@@ -22,6 +22,8 @@ class DpdService
     private static $methodMap = [
         'getServiceCostByParcels2' => 'calculator2',
         'createOrder' => 'order2',
+        'getTerminalsSelfDelivery2' => 'geography2',
+        'getParcelShops' => 'geography2',
     ];
 
     /**
