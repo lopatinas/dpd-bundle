@@ -42,7 +42,7 @@ class DpdService
      * @param string $tag
      * @return mixed
      */
-    private function doRequest($method, $data, $tag = '')
+    private function doRequest($method, $data = [], $tag = '')
     {
         if (!isset(self::$methodMap[$method])) {
             throw new DpdException(sprintf('Method "%s" not found'), $method);
@@ -88,5 +88,21 @@ class DpdService
     public function createOrder(array $data)
     {
         return $this->doRequest('createOrder', $data, 'orders');
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSelfDeliveryTerminals()
+    {
+        return $this->doRequest('getTerminalsSelfDelivery2');
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getParcelShops()
+    {
+        return $this->doRequest('getParcelShops', [], 'request');
     }
 }
